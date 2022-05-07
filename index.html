@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I love you<3</title>
+    <link rel="shortcut icon" href="https://img.icons8.com/color/344/heart-puzzle.png" type="image/x-icon">
+    <style>
+        html,body {
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        #background {
+            background-image: url("https://images.unsplash.com/photo-1474552226712-ac0f0961a954?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGxvdmV8ZW58MHx8MHx8&auto=format&fit=crop&w=2000&q=1000");
+            height: 99%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .center p {
+            text-align: center;
+            color: #fff;
+        }
+
+        @media only screen and (max-width: 2000px){
+            p { 
+                font-size: 10vh;
+            }
+        }
+
+        @media only screen and (max-width: 900px) {
+            p {
+                font-size: 7.5vh;
+            }
+        }
+
+        @media only screen and (max-width: 500px) {
+            p {
+                font-size: 5vh;
+            }
+        }
+    </style>
+</head>
+<body id="background">  
+    <div class="center">
+        <p id="demo"></p>
+    </div>
+
+    
+    <script>
+        countDownDate = new Date("June 6, 2022 12:0:0").getTime();
+
+        x = setInterval(function() {
+            now = new Date().getTime();
+
+            distance = countDownDate - now;
+                
+            days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+            document.getElementById("demo").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+    
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("demo").innerHTML = "I love you<3";
+            }
+        }, 1000);
+
+    </script>
+</body>
+</html>
