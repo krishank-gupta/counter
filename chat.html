@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I love you<3</title>
+    <link rel="shortcut icon" href="https://img.icons8.com/color/344/heart-puzzle.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+         html,body {
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        #background {
+            background-image: url("https://images.unsplash.com/photo-1474552226712-ac0f0961a954?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGxvdmV8ZW58MHx8MHx8&auto=format&fit=crop&w=2000&q=1000");
+            height: 99%;
+            background-position: center;
+            background-repeat: repeat;
+            background-size: cover;
+        }
+        
+        #form {
+            margin-top: 25px;
+        }
+
+        #messages {
+            margin-top: 50px;
+        }
+
+        #submitBtn:hover {
+            background-color: black !important;
+            color: white !important;
+        }
+
+        /* normal color */
+        .input-field>label {
+            color: white !important;
+        }
+
+        input:not([type]), input[type=text]:not(.browser-default), input[type=password]:not(.browser-default), input[type=email]:not(.browser-default), input[type=url]:not(.browser-default), input[type=time]:not(.browser-default), input[type=date]:not(.browser-default), input[type=datetime]:not(.browser-default), input[type=datetime-local]:not(.browser-default), input[type=tel]:not(.browser-default), input[type=number]:not(.browser-default), input[type=search]:not(.browser-default), textarea.materialize-textarea{
+            border-bottom: 1px solid white !important; 
+        }
+
+        /* focus color */
+        .input-field input:focus + label {
+            color: white !important;
+        }
+
+        .row .input-field input:focus .btn {
+            border-bottom: 1px solid white !important;
+            box-shadow: 0 1px 0 0 white !important
+        }
+
+        /*  */
+        input, select, textarea{
+            color: #fff;
+        }
+
+    </style>
+</head>
+<body id="background">
+
+    <div class="container inputSection">
+        <div class="row">
+            <form class="col s12" id="form" onsubmit="submitHandler(event)">
+                <div class="row">
+                    <div class="input-field col m5 s12">
+                        <input id="name" type="text" class="" required>
+                        <label for="name">Name</label>
+                    </div>
+                    <div class="input-field col m5 s12">
+                        <input id="message" type="text" class="" required>
+                        <label for="message">Message</label>
+                    </div>
+                    <div class="input-field col m2 s12">
+                        <button class="btn btn-large btn-register waves-effect waves-light white pink-text" type="submit" name="action" id="submitBtn">Submit
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+        
+    <hr>
+
+    <div id="messages" class="">
+        <ul id="newMessages">
+       
+        </ul>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script>
+        function submitHandler(e){
+            e.preventDefault()
+
+            author = document.getElementById("name").value
+            message = document.getElementById("message").value
+
+            const data = { author: author, message: message};
+
+            fetch('https://chat-shalupa.herokuapp.com/api/messages', {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    document.getElementById("newMessages").innerHTML=""
+                    document.getElementById("form").reset()
+                    getMessages();
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+                });
+        }
+        
+
+        function getMessages(){
+            fetch("https://chat-shalupa.herokuapp.com/api/messages")
+                .then((res) => res.json())
+                .then(data => {
+                    console.log(data)
+                    data.forEach(element => {
+                        message = element.message
+                        author = element.author
+
+                        time = new Date(element.date).toLocaleString('en-US', { timeZone: 'Asia/Kathmandu' })
+                        
+                        array = [`• ${time}: ${author} wrote: ${message}`]
+                        
+                        
+
+                        newDiv = document.createElement("div");
+
+                        newDiv.innerHTML = `
+                        <div class="container">
+                        <div class="container row pink white-text" style="border: 1px solid white; border-radius: 25px;">
+                            <div class="col s6" style="font-size: 15px">
+                                <p>By ${author}</p>
+                            </div>
+                            <div class="col s6" style="font-size: 15px">
+                                <p class="right-align">${time}</p>
+                            </div>
+
+                            <div class="" style="padding: 0 .75rem; font-size: 18px">
+                                <p>${message}</p>
+                            </div>
+                        </div>
+                        </div>
+                        `
+                        document.getElementById("newMessages").appendChild(newDiv);
+
+                    });
+                })
+                .catch((err) => {console.log(err)})
+        }        
+
+        document.addEventListener('DOMContentLoaded', getMessages());
+
+    </script>
+</body>
+</html>
